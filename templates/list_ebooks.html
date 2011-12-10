@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Ebooks von "{{group}}"{% endblock %}
+
+{% block content %}
+
+<h3>Ebooks der Gruppe "{{group}}"</h3>
+<ul>
+    {% for eb in ebooks %}
+        <li>{{eb.ebook.id}} -
+        <a href="/static/{{ eb.filepath|urlencode }}">{{eb.ebook.filename}}</a>
+        - <span class="filesize">{{ eb.ebook.size|filesizeformat}}</span>
+        </li>
+    {%  endfor %}
+</ul>
+
+{% endblock %}

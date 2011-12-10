@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %} Übersicht {% endblock title %}
+
+{% block meta %}
+    <link rel="stylesheet" type="text/css" href="/static/css/overview.css" />
+    <script src="/static/js/jquery-1.7.1.min.js"></script>
+{% endblock meta %}
+
+
+
+{% block content %}
+    <h1>Dies ist eine eBook-Übersicht</h1>
+
+    <div id="overview">
+        <h3>Kategorien</h3>
+        <ul id="categories">
+            {% for cat in categories %}
+            <li>
+                <a class="category" href="#">{{cat.category.name}} - {{cat.category.description}}</a>
+                <ul class="groups">
+                    {% for group in cat.groups %}
+                    <li><a href="/show/group/{{group.id}}">{{group.name}}</a> - {{group.description}}</li>
+                    {% endfor %}
+                </ul>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    
+    <script>
+    $('.category').click(function() {
+      $(this).parent('li').children('ul').toggle('fast', function() {
+      });
+    });
+    </script>
+    
+{% endblock %}

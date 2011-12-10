@@ -1,0 +1,75 @@
+html {
+    margin: 0px;
+    padding: 0px;
+    background-color: #f2f2f2;
+    color: #2d2d2d;
+    font-size: 12pt;
+}
+
+#container {
+    width: 900px;
+    margin: 10px auto;
+    padding: 10px;
+    background-color: #fff;
+}
+
+#header {
+    height:130px;
+    border: 2px solid #2d2d2d;
+    position: relative;
+    background-image: url(/static/img/book.png);
+}
+
+#title {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    padding: 15px;
+    font-weight: bold;
+    font-size: 16pt;
+    background-color: #fff;
+}
+
+#navigation {
+    text-align: center;
+    height: 30px;
+    width: 100%;
+    position: absolute;
+    bottom: 0px;
+    background-color: #2d2d2d;
+    padding-top: 10px;
+}
+
+#navigation ul {
+    margin: 0px;
+}
+
+#navigation li {
+    list-style-type: none;
+    display: inline-block;
+    padding: 0px 5px;
+    border-right: 2px solid #f2f2f2;
+    border-left: 2px solid #f2f2f2;
+}
+
+#navigation a {
+    text-decoration: none;
+    color: #f2f2f2;
+    font-weight: bold;
+    font-size: 10pt;
+}
+
+#navigation a:hover, a:active {
+    text-decoration: underline;
+}
+
+/*
+ * Stilvorgaben für Content
+ */
+#content {
+    padding: 10px 0px 0px 15px;
+}
+
+#content ul,ol {
+    margin-left: 30px;
+}
