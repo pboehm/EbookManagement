@@ -1,16 +1,33 @@
 {% extends "base.html" %}
 {% block title %}Ebooks von "{{group}}"{% endblock %}
 
+{% block meta %}
+    <link rel="stylesheet" type="text/css" href="/static/css/list_ebooks.css" />
+{% endblock %}
+    
 {% block content %}
 
 <h3>Ebooks der Gruppe "{{group}}"</h3>
-<ul>
+
+<form method="post" action="/manage/ebooks/">
+<table id="ebooks">
     {% for eb in ebooks %}
-        <li>{{eb.ebook.id}} -
-        <a href="/static/{{ eb.filepath|urlencode }}">{{eb.ebook.filename}}</a>
-        - <span class="filesize">{{ eb.ebook.size|filesizeformat}}</span>
-        </li>
-    {%  endfor %}
-</ul>
+        <tr {% cycle 'class="highlighted"' '' %}>
+        <td class="filename">
+            <a href="/static/{{ eb.filepath|urlencode }}">{{eb.ebook.filename}}</a>
+        </td>
+        <td class="filesize">
+            <span>{{ eb.ebook.size|filesizeformat}}</span>
+        </td>
+        <td class="fileaction">
+            {{ eb.form.action }}
+        </td>
+        </tr>
+    {% empty %}
+        <td>Keine Ebooks in dieser Gruppe vorhanden</td>
+    {% endfor %}
+</table>
+<input type="submit" value="Aktionen durchführen"/>
+</form>
 
 {% endblock %}

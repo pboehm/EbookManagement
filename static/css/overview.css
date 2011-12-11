@@ -1,28 +1,26 @@
 #categories a,a:hover,a:active {
     text-decoration: none;
-    color: #000;
+    color: #2d2d2d;
     font-size: 12pt;
     font-weight: bold;
 }
 
-#categories ul {
-    margin: 0px;
-    padding: 0px;
-    width: 100%;
-}
-
-#categories li {
+#categories>li {
     list-style-type: none;
     width: 100%;
-    padding: 2px 5px 2px 5px;
+    padding: 5px;
     background-color: #f2f2f2;
 }
 
-.groups {
+.associated_groups {
+    background-color:#f2f2f2;
     display: none;
-    margin-left: 35px;
 }
 
-.groups li {
-    background-color: yellow;
+.associated_groups li {
+    list-style-type: disc; 
+    padding: 3px;
+    margin-left: 10px;
+    background-color: transparent;
 }
+

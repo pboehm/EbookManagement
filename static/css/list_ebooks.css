@@ -1,0 +1,28 @@
+#ebooks {
+    width: 100%;
+}
+
+#ebooks a,a:active {
+    color: #2d2d2d;
+    text-decoration: none;
+}
+
+#ebooks a:hover {
+    text-decoration: underline;
+}
+
+.highlighted {
+    background-color: #f2f2f2;
+}
+
+.filename {
+    width: 70%;
+}
+
+.filesize {
+    width: 10%;
+}
+
+.fileaction {
+    width: 20%;
+}

@@ -41,9 +41,10 @@ class CategoryWithGroups(object):
         self.groups.append(group)
 
 class EbookInformation(object):
-    def __init__(self, ebook):
+    def __init__(self, ebook, form):
         self.ebook = ebook
         self.filepath = self.__generate_path(ebook);
+        self.form = form
 
     def __generate_path(self, ebook):
         try:

@@ -4,7 +4,10 @@ from django.http import HttpResponseNotFound, HttpResponseRedirect
 from forms import *
 from models import *
 from EbookManagement.settings import *
+from EbookManagement.ebooks.forms import EbookManagementForm
 import os
+import pprint
+import re
 
 def overview(request):
     """
@@ -31,9 +34,10 @@ def show_data(request, type, dataid):
             group = Group.objects.get(id=dataid)
             ebooks = []
             for ebook in Ebook.objects.order_by("name").filter(group=group.id):
-                info = EbookInformation(ebook)
+                form = EbookManagementForm(prefix=str(ebook.id))
+                info = EbookInformation(ebook, form)
                 ebooks.append(info)
-            
+                
             return render_to_response('list_ebooks.html',
                 {'group': group.name, 'ebooks': ebooks})
         except Exception, e:
@@ -45,10 +49,24 @@ def show_data(request, type, dataid):
     else:
         return HttpResponseNotFound
 
+def manage_ebooks(request):
+    """
+        Ebooks verwalten
+    """
+    pp = pprint.PrettyPrinter()
+
+    if request.POST is not None:
+        for (key, value) in request.POST.iteritems():
+            if (len(value) != 0) and EbookManagementForm.isValidAction(value):
+                print value
+
+    return HttpResponseRedirect('/')
+
+"""
 def submit_new(request, type):
-    """
+   
         Neue Daten hinzufügen
-    """
+   
     if type == "ebook":
         form=EbookForm(request.POST)
         if form.is_valid():
@@ -65,3 +83,4 @@ def submit_new(request, type):
             return render_to_response('add_new.html',
                 { 'sitetitle': 'Fehler im Formular', 'form': form, 'type': type})
         
+"""

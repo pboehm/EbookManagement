@@ -10,19 +10,19 @@
 
 
 {% block content %}
-    <h1>Dies ist eine eBook-Übersicht</h1>
-
     <div id="overview">
         <h3>Kategorien</h3>
         <ul id="categories">
             {% for cat in categories %}
             <li>
-                <a class="category" href="#">{{cat.category.name}} - {{cat.category.description}}</a>
-                <ul class="groups">
-                    {% for group in cat.groups %}
-                    <li><a href="/show/group/{{group.id}}">{{group.name}}</a> - {{group.description}}</li>
-                    {% endfor %}
-                </ul>
+                <a class="category" href="#">{{cat.category.name}}</a>
+                <div class="associated_groups">
+                    <ul>
+                        {% for group in cat.groups %}
+                        <li><a href="/show/group/{{group.id}}">{{group.name}}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
             </li>
             {% endfor %}
         </ul>
@@ -30,7 +30,7 @@
     
     <script>
     $('.category').click(function() {
-      $(this).parent('li').children('ul').toggle('fast', function() {
+      $(this).parent('li').children('div').toggle('fast', function() {
       });
     });
     </script>

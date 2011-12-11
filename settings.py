@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Django settings for EbookManagement project.
 import os.path
 
@@ -46,6 +47,16 @@ USE_L10N = True
 
 # Pfad zu den Ebooks
 EBOOK_PATH = '/home/philipp/Desktop/Ebooks/'
+
+####
+# Moeglichkeiten fuer Ebooks
+CHOICES_FOR_EBOOKS = [
+        ('', '-------------'),
+        ('info', 'Informationen anzeigen'),
+        ('move', 'Verschieben'),
+        ('delete', 'Löschen'),
+        ('push2kindle', 'An Kindle versenden'),
+    ]
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"

@@ -9,6 +9,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
     url(r'^$', views.overview),
     url(r'show/(?P<type>\w+)/(?P<dataid>\d+)/', views.show_data ),
+    url(r'manage/ebooks/', views.manage_ebooks ),
 
     url(r'^static/(?P<path>.*)$', 'django.views.static.serve'),
 

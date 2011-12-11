@@ -26,7 +26,9 @@ class Command(BaseCommand):
             try:
                 existing_category = Category.objects.get(dirname=cat)
             except Exception, e:
-                existing_category = Category(name=cat, dirname=cat)
+                existing_category = Category(
+                                        name=cat.replace("_", " "),
+                                        dirname=cat)
 
             existing_category.serial = serial
             existing_category.save()
@@ -46,7 +48,7 @@ class Command(BaseCommand):
                                         category=existing_category.id)
                 except Exception, e:
                     existing_group = Group(
-                                        name=group,
+                                        name=group.replace("_", " "),
                                         dirname=group,
                                         category=existing_category)
     
