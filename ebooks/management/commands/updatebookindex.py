@@ -92,7 +92,7 @@ class Command(BaseCommand):
             group.delete()
         
         for category in Category.objects.exclude(serial=ser):
-            print category.filename
+            print category.dirname
             category.delete()
 
 
