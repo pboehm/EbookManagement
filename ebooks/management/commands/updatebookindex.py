@@ -76,4 +76,25 @@ class Command(BaseCommand):
         
                     existing_ebook.serial = serial
                     existing_ebook.save()
-    
+        
+        """
+        Delete Categories, Groups, Ebooks which are not updated
+        """
+
+        print "Suche nach Ebooks die nicht mehr existieren"
+        ser=serial
+        for ebook in Ebook.objects.exclude(serial=ser):
+            print ebook.filename
+            ebook.delete()
+        
+        for group in Group.objects.exclude(serial=ser):
+            print group.dirname
+            group.delete()
+        
+        for category in Category.objects.exclude(serial=ser):
+            print category.filename
+            category.delete()
+
+
+
+

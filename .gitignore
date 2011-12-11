@@ -1,1 +1,2 @@
-*.pyc
+ebooks.db
+*pyc
