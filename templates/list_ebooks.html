@@ -14,7 +14,7 @@
     {% for eb in ebooks %}
         <tr {% cycle 'class="highlighted"' '' %}>
         <td class="filename">
-            <a href="/static/{{ eb.filepath|urlencode }}">{{eb.ebook.filename}}</a>
+            <a href="/media/{{ eb.filepath|urlencode }}">{{eb.ebook.filename}}</a>
         </td>
         <td class="filesize">
             <span>{{ eb.ebook.size|filesizeformat}}</span>
