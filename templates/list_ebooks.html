@@ -2,7 +2,7 @@
 {% block title %}Ebooks von "{{group}}"{% endblock %}
 
 {% block meta %}
-    <link rel="stylesheet" type="text/css" href="/static/css/list_ebooks.css" />
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/list_ebooks.css" />
 {% endblock %}
     
 {% block content %}
@@ -14,7 +14,7 @@
     {% for eb in ebooks %}
         <tr {% cycle 'class="highlighted"' '' %}>
         <td class="filename">
-            <a href="/media/{{ eb.filepath|urlencode }}">{{eb.ebook.filename}}</a>
+            <a href="{{ MEDIA_URL }}{{ eb.filepath|urlencode }}">{{eb.ebook.filename}}</a>
         </td>
         <td class="filesize">
             <span>{{ eb.ebook.size|filesizeformat}}</span>
