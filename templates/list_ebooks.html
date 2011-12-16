@@ -12,7 +12,8 @@
 <form method="post" action="/manage/ebooks/">
 <table id="ebooks">
     {% for eb in ebooks %}
-        <tr {% cycle 'class="highlighted"' '' %}>
+        <tr{% cycle 'class="highlighted"' '' %}>
+        <td class="fileicon"><img src="{{ STATIC_URL }}fileicons/{{ eb.ebook.icon }}.png"</tr>
         <td class="filename">
             <a href="{{ MEDIA_URL }}{{ eb.filepath|urlencode }}">{{eb.ebook.filename}}</a>
         </td>

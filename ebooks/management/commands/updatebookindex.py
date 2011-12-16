@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand, CommandError
 from EbookManagement.ebooks.models import *
-from EbookManagement.settings import EBOOK_PATH
+from EbookManagement.settings import EBOOK_PATH, EXISTING_FILE_ICONS
 import os
 import time
 
@@ -13,7 +13,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         serial= int(time.time())  
         os.chdir(EBOOK_PATH)
-
+        print EXISTING_FILE_ICONS
         """
         iterate over all Groups
         """
@@ -70,9 +70,16 @@ class Command(BaseCommand):
                                                     group=existing_group.id)
                     except Exception, e:
                         filesize=os.path.getsize(os.path.join(cat,group,ebook))
+                        fileicon='file'
+                        ending = ebook[-3:]
+
+                        if ending in EXISTING_FILE_ICONS:
+                            fileicon = ending 
+
                         existing_ebook = Ebook(
                                             name=ebook,
                                             filename=ebook,
+                                            icon=fileicon,
                                             group=existing_group,
                                             size=filesize)
         

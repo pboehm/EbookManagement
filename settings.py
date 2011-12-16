@@ -44,6 +44,13 @@ CHOICES_FOR_EBOOKS = [
         ('delete', 'Löschen'),
         ('push2kindle', 'An Kindle versenden'),
     ]
+
+####
+# Existierende Icons laden
+EXISTING_FILE_ICONS = []
+for icon in os.listdir(os.path.join(PROJECT_ROOT, 'static', 'fileicons')):
+    EXISTING_FILE_ICONS.append(icon.split('.')[0])
+
 ###
 # Statische Daten
 MEDIA_ROOT = EBOOK_PATH

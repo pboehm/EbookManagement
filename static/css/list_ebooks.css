@@ -15,6 +15,10 @@
     background-color: #f2f2f2;
 }
 
+.fileicon {
+    padding-right: 5px;
+}
+
 .filename {
     width: 70%;
 }

@@ -23,6 +23,7 @@ class Ebook(models.Model):
     name = models.CharField(max_length=100)
     size = models.IntegerField()
     filename = models.CharField(max_length=100)
+    icon = models.CharField(max_length=10)
     group = models.ForeignKey('Group')
     serial = models.IntegerField()
 
