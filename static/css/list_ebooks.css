@@ -40,4 +40,6 @@
 	color:#fff;
 }
 
-
+body {
+	overflow-y: scroll;
+}
