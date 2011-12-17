@@ -72,7 +72,7 @@ class Command(BaseCommand):
                                                     group=existing_group.id)
                     except Exception, e:
                         filesize=os.path.getsize(os.path.join(cat,group,ebook))
-                        md5hash = subprocess.check_output(["md5sum", ebookfile]).split(' ')[0].strip()
+                        md5hash = subprocess.Popen(["md5sum", ebookfile], stdout=subprocess.PIPE).communicate()[0].split(' ')[0].strip()
                         print md5hash
                         fileicon='file'
                         ending = ebook[-3:].lower()
