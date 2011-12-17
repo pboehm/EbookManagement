@@ -30,10 +30,17 @@ SITE_ID = 1
 USE_I18N = True
 USE_L10N = True
 
+####
 # Pfad zu den Ebooks
 EBOOK_PATH = '/var/ebooks/'
 if DEBUG == True:
     EBOOK_PATH = '/home/philipp/Desktop/Ebooks'
+
+####
+# Pfad zu Thumbnails
+EBOOK_THUMBNAIL_PATH = os.path.join(EBOOK_PATH, '.thumbnails')
+if not os.path.isdir(EBOOK_THUMBNAIL_PATH):
+    os.mkdir(EBOOK_THUMBNAIL_PATH)
 
 ####
 # Moeglichkeiten fuer Ebooks

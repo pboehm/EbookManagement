@@ -1,8 +1,9 @@
 from django.core.management.base import BaseCommand, CommandError
 from EbookManagement.ebooks.models import *
-from EbookManagement.settings import EBOOK_PATH, EXISTING_FILE_ICONS
+from EbookManagement.settings import * 
 import os
 import time
+import subprocess
 
 class Command(BaseCommand):
     """
@@ -13,13 +14,13 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         serial= int(time.time())  
         os.chdir(EBOOK_PATH)
-        print EXISTING_FILE_ICONS
+
         """
         iterate over all Groups
         """
-        for cat in os.listdir("."):
+        for cat in os.listdir(u"."):
 
-            if not os.path.isdir(cat):
+            if not os.path.isdir(cat) or cat.startswith("."):
                 continue
         
             print cat
@@ -38,7 +39,7 @@ class Command(BaseCommand):
             """
             for group in os.listdir(cat):
 
-                if not os.path.isdir(os.path.join(cat,group)):
+                if not os.path.isdir(os.path.join(cat,group)) or group.startswith("."):
                     continue
             
                 print "--> %s" % group
@@ -59,8 +60,9 @@ class Command(BaseCommand):
                 iterate over all Ebooks
                 """
                 for ebook in os.listdir(os.path.join(cat,group)):
-
-                    if not os.path.isfile(os.path.join(cat,group,ebook)):
+                    
+                    ebookfile = unicode( os.path.join(cat,group,ebook))
+                    if not os.path.isfile(ebookfile or ebook.startswith(".")):
                         continue
                 
                     print "----> %s" % ebook
@@ -70,8 +72,10 @@ class Command(BaseCommand):
                                                     group=existing_group.id)
                     except Exception, e:
                         filesize=os.path.getsize(os.path.join(cat,group,ebook))
+                        md5hash = subprocess.check_output(["md5sum", ebookfile]).split(' ')[0].strip()
+                        print md5hash
                         fileicon='file'
-                        ending = ebook[-3:]
+                        ending = ebook[-3:].lower()
 
                         if ending in EXISTING_FILE_ICONS:
                             fileicon = ending 
@@ -81,8 +85,24 @@ class Command(BaseCommand):
                                             filename=ebook,
                                             icon=fileicon,
                                             group=existing_group,
-                                            size=filesize)
-        
+                                            size=filesize,
+                                            hasThumbnail=False,
+                                            hashvalue=md5hash)
+                    
+                    """
+                    Thumbnail erstellen
+                    """
+                    if not existing_ebook.hasThumbnail:
+                        cmd = u'%s "%s" "%s" "%s"' % (
+                                 os.path.join(PROJECT_ROOT, 'utils', 'create_thumbnail.sh'), 
+                                 os.path.join(EBOOK_PATH, ebookfile),
+                                 os.path.join(EBOOK_THUMBNAIL_PATH, existing_ebook.hashvalue + '.png'),
+                                 (ebookfile[-3:].lower())
+                               )
+                        ret = subprocess.call(cmd, shell=True)
+                        if ret == 0:
+                            existing_ebook.hasThumbnail = True
+
                     existing_ebook.serial = serial
                     existing_ebook.save()
         
@@ -93,6 +113,9 @@ class Command(BaseCommand):
         print "Suche nach Ebooks die nicht mehr existieren"
         ser=serial
         for ebook in Ebook.objects.exclude(serial=ser):
+            if ebook.hasThumbnail:
+                thumbnail = os.path.join(EBOOK_THUMBNAIL_PATH, ebook.hashvalue + '.png')
+                os.unlink(thumbnail)
             print ebook.filename
             ebook.delete()
         

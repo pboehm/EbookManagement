@@ -25,6 +25,8 @@ class Ebook(models.Model):
     filename = models.CharField(max_length=100)
     icon = models.CharField(max_length=10)
     group = models.ForeignKey('Group')
+    hashvalue = models.CharField(max_length=100)
+    hasThumbnail = models.BooleanField()
     serial = models.IntegerField()
 
     def __unicode__(self):

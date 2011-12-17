@@ -3,26 +3,32 @@
 
 {% block meta %}
 <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/list_ebooks.css" />
+<script src="{{ STATIC_URL }}js/jquery-1.7.1.min.js"></script>
 {% endblock %}
     
 {% block content %}
-
 <h3>Ebooks der Gruppe "{{group}}"</h3>
 
 <form method="post" action="/manage/ebooks/">
 <table id="ebooks">
     {% for eb in ebooks %}
-        <tr{% cycle 'class="highlighted"' '' %}>
-        <td class="fileicon"><img src="{{ STATIC_URL }}fileicons/{{ eb.ebook.icon }}.png"</tr>
-        <td class="filename">
-            <a href="{{ MEDIA_URL }}{{ eb.filepath|urlencode }}">{{eb.ebook.filename}}</a>
-        </td>
-        <td class="filesize">
-            <span>{{ eb.ebook.size|filesizeformat}}</span>
-        </td>
-        <td class="fileaction">
-            {{ eb.form.action }}
-        </td>
+        <tr {% cycle 'class="highlighted"' '' %}>
+            <td class="fileicon">
+                <a{% if eb.ebook.hasThumbnail %}
+                    class="thumbnail" href="{{ MEDIA_URL }}.thumbnails/{{ eb.ebook.hashvalue }}.png"
+                    {% endif %} title="{{ eb.ebook.filename }}">
+                    <img src="{{ STATIC_URL }}fileicons/{{ eb.ebook.icon }}.png"/>
+                </a>    
+            </td>
+            <td class="filename">
+                <a href="{{ MEDIA_URL }}{{ eb.filepath|urlencode }}">{{eb.ebook.filename}}</a>
+            </td>
+            <td class="filesize">
+                <span>{{ eb.ebook.size|filesizeformat}}</span>
+            </td>
+            <td class="fileaction">
+                {{ eb.form.action }}
+            </td>
         </tr>
     {% empty %}
         <td>Keine Ebooks in dieser Gruppe vorhanden</td>
@@ -30,5 +36,42 @@
 </table>
 <input type="submit" value="Aktionen durchführen"/>
 </form>
+
+<script>
+this.imagePreview = function(){	
+	/* CONFIG */
+		
+		xOffset = 0;
+		yOffset = 0;
+		
+		// these 2 variable determine popup's distance from the cursor
+		// you might want to adjust to get the right result
+		
+	/* END CONFIG */
+	$("a.thumbnail").hover(function(e){
+		this.t = this.title;
+		$("#container").append("<p id='preview'><img src='"+ this.href +"' alt='Image preview' /></p>");								 
+		$("#preview")
+			.css("top",(e.pageY - xOffset) + "px")
+			.css("left",(e.pageX + yOffset) + "px")
+			.fadeIn("fast");						
+    },
+	function(){
+		this.title = this.t;	
+		$("#preview").remove();
+    });	
+	$("a.thumbnail").mousemove(function(e){
+		$("#preview")
+			.css("top",(e.pageY - xOffset) + "px")
+			.css("left",(e.pageX + yOffset) + "px");
+	});			
+};
+
+
+// starting the script on page load
+$(document).ready(function(){
+	imagePreview();
+});
+</script>
 
 {% endblock %}
