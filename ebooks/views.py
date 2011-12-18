@@ -2,6 +2,7 @@
 from django.shortcuts import render_to_response
 from django.http import HttpResponseNotFound, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
+from django.template import RequestContext
 from models import *
 from EbookManagement.settings import *
 from EbookManagement.ebooks.forms import *
@@ -24,7 +25,9 @@ def overview(request):
 
         categories.append(categorywithgroups)
     
-    return render_to_response('overview.html', { 'categories': categories})
+    return render_to_response('overview.html', 
+                            { 'categories': categories},
+                            context_instance=RequestContext(request))
 
 @login_required
 def show_data(request, type, dataid):
@@ -43,7 +46,8 @@ def show_data(request, type, dataid):
             action_form = EbookActionSelectForm()
 
             return render_to_response('list_ebooks.html',
-                    {'group': group.name, 'ebooks': ebooks, 'action': action_form})
+                    {'group': group.name, 'ebooks': ebooks, 'action': action_form},
+                    context_instance=RequestContext(request))
         except Exception, e:
             return HttpResponseNotFound
         
@@ -93,7 +97,8 @@ def manage_ebooks(request):
             except Exception, e:
                 pass
         
-        return render_to_response('move_ebooks.html', {'forms': forms})        
+        return render_to_response('move_ebooks.html', {'forms': forms},
+                context_instance=RequestContext(request))        
 
     elif action == 'delete':
         print "Delete"

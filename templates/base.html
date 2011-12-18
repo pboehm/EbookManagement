@@ -18,7 +18,14 @@
     <div id="navigation">
         <ul>
             <li><a href="/">Startseite</a></li>
-            <li><a href="/logout/">Logout</a></li>
+
+            {% if user.is_authenticated %}
+            <li id="userinfo">Hallo {{ user.first_name }} {{ user.last_name }}
+            <form method="get" action="/logout/">
+                <input type="Submit" value="Logout"/>
+            </form>
+            </li>
+            {% endif %}
         </ul>
     </div>
     </div>

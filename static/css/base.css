@@ -65,6 +65,17 @@ body {
     text-decoration: underline;
 }
 
+#userinfo {
+    margin-left: 150px;
+    color: #f2f2f2;
+    font-weight: bold;
+    font-size: 10pt;
+}
+
+#userinfo form {
+    display: inline;
+}
+
 /*
  * Stilvorgaben für Content
  */
