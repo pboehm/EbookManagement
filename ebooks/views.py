@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render_to_response
 from django.http import HttpResponseNotFound, HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
 from models import *
 from EbookManagement.settings import *
 from EbookManagement.ebooks.forms import *
@@ -9,6 +10,7 @@ import re
 import pprint
 import shutil
 
+@login_required
 def overview(request):
     """
         Gibt einen Überblick über vorhandene Kategorien und Gruppen
@@ -24,7 +26,7 @@ def overview(request):
     
     return render_to_response('overview.html', { 'categories': categories})
 
-    
+@login_required
 def show_data(request, type, dataid):
     """
         Listet verschiedene Daten auf
@@ -51,6 +53,7 @@ def show_data(request, type, dataid):
     else:
         return HttpResponseNotFound
 
+@login_required
 def manage_ebooks(request):
     """
         Ebooks verwalten
@@ -99,6 +102,7 @@ def manage_ebooks(request):
 
     return HttpResponseRedirect("/")
 
+@login_required
 def submit_ebook_move(request):
     """
         Ebooks letztendlich verschieben
@@ -136,3 +140,4 @@ def submit_ebook_move(request):
                 print e
 
     return HttpResponseRedirect("/")
+

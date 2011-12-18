@@ -94,6 +94,10 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'EbookManagement.urls'
 
+AUTH_PROFILE_MODULE = 'ebooks.UserProfile'
+LOGIN_REDIRECT_URL = '/'
+LOGIN_URL= '/login/'
+
 TEMPLATE_DIRS = (
     os.path.join(PROJECT_ROOT, 'templates'),
 )
