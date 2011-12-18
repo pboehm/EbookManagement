@@ -29,9 +29,14 @@
     </div>
     
     <script>
+    //Wenn JavaScript aktiviert, die Gruppen der Kategorien ausblenden
+    $(document).ready(function(){
+       $('.associated_groups').css('display', 'none'); 
+    });
+
+    //Entsprechende Gruppen einblenden/ausblenden
     $('.category').click(function() {
-      $(this).parent('li').children('div').toggle('fast', function() {
-      });
+      $(this).parent('li').children('div').toggle('fast', function() {});
     });
     </script>
     
