@@ -26,15 +26,20 @@
             <td class="filesize">
                 <span>{{ eb.ebook.size|filesizeformat}}</span>
             </td>
-            <td class="fileaction">
-                {{ eb.form.action }}
+            <td class="fileselected">
+                {{ eb.form.selected }}
             </td>
         </tr>
     {% empty %}
         <td>Keine Ebooks in dieser Gruppe vorhanden</td>
     {% endfor %}
+    <tr class="lastrow">
+        <td colspan="4">
+            {{ action.action }}
+            <input id="submit_action" type="submit" value="Aktionen durchführen"/>
+        </td>
+    </tr>
 </table>
-<input type="submit" value="Aktionen durchführen"/>
 </form>
 
 <script>
@@ -72,6 +77,17 @@ this.imagePreview = function(){
 $(document).ready(function(){
 	imagePreview();
 });
+
+//
+// Submit Button entfernen, wenn Javascript aktiv ist
+//
+$(document).ready(function(){
+    $('#submit_action').css("display", "none");
+    $('#id_action').change(function() {
+        $(this).closest("form").submit();
+    });
+});
+
 </script>
 
 {% endblock %}

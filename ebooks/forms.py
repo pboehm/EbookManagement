@@ -17,14 +17,12 @@ class EbookForm(ModelForm):
         model = Ebook
 
 class EbookManagementForm(Form):
+    selected = forms.BooleanField()
+
+class EbookActionSelectForm(Form):
     action = forms.ChoiceField(choices=CHOICES_FOR_EBOOKS)
 
-    @staticmethod
-    def isValidAction(action):
-        for (key, value) in CHOICES_FOR_EBOOKS:
-            if len(action) > 0 and key == action:
-                return True
-            return False
-
-
-        
+class EbookMovementForm(ModelForm):
+    class Meta:
+        model = Ebook
+        fields = ('name', 'group')

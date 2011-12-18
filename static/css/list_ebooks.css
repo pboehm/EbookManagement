@@ -20,15 +20,25 @@
 }
 
 .filename {
-    width: 70%;
+    width: 84%;
 }
 
 .filesize {
+    text-align: right;
     width: 10%;
 }
 
-.fileaction {
-    width: 20%;
+.fileselected {
+    text-align: center;
+    width: 6%;
+}
+
+.fileselected input {
+    width: 100%;
+}
+
+.lastrow {
+    text-align: right;
 }
 
 #preview{

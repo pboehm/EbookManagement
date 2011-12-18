@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Ebooks verschieben{% endblock %}
+
+{% block meta %}
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/move_ebooks.css" />
+{% endblock %}
+    
+{% block content %}
+<h3>Verschieben von Ebooks</h3>
+<div id="ebook_forms">
+    <form method="post" action="/manage/ebooks/move/" >
+        {% for form in forms %}
+        <table>
+            {{ form.as_table }}
+        </table>
+        <br/>
+        {% endfor %}
+        <input type="submit" value="Ebooks in die neuen Gruppen einordnen"/>
+    </form>
+</div>
+{% endblock %}

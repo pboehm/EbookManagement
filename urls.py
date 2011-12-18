@@ -10,7 +10,8 @@ admin.autodiscover()
 urlpatterns = patterns('',
     url(r'^$', views.overview),
     url(r'show/(?P<type>\w+)/(?P<dataid>\d+)/', views.show_data ),
-    url(r'manage/ebooks/', views.manage_ebooks ),
+    url(r'manage/ebooks/$', views.manage_ebooks ),
+    url(r'manage/ebooks/move/$', views.submit_ebook_move ),
 
     # admin
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),

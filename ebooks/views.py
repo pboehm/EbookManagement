@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render_to_response
 from django.http import HttpResponseNotFound, HttpResponseRedirect
-from forms import *
 from models import *
 from EbookManagement.settings import *
-from EbookManagement.ebooks.forms import EbookManagementForm
+from EbookManagement.ebooks.forms import *
 import os
-import pprint
 import re
+import pprint
+import shutil
 
 def overview(request):
     """
@@ -37,9 +37,11 @@ def show_data(request, type, dataid):
                 form = EbookManagementForm(prefix=str(ebook.id))
                 info = EbookInformation(ebook, form)
                 ebooks.append(info)
-                
+            
+            action_form = EbookActionSelectForm()
+
             return render_to_response('list_ebooks.html',
-                {'group': group.name, 'ebooks': ebooks})
+                    {'group': group.name, 'ebooks': ebooks, 'action': action_form})
         except Exception, e:
             return HttpResponseNotFound
         
@@ -53,34 +55,84 @@ def manage_ebooks(request):
     """
         Ebooks verwalten
     """
-    pp = pprint.PrettyPrinter()
+    if request.POST is None:
+        return HttpResponseRedirect("/")
 
-    if request.POST is not None:
-        for (key, value) in request.POST.iteritems():
-            if (len(value) != 0) and EbookManagementForm.isValidAction(value):
-                print value
+    ###
+    # Ebook-IDs extrahieren
+    ebook_ids = []
+    action=""
+    for (key, value) in request.POST.iteritems():
+        if (len(value) != 0) and key.endswith('selected'): 
+            try:
+                e_id = key.split('-')[0]
+                Ebook.objects.get(id=e_id)
+                ebook_ids.append(e_id)
+            except Exception, e:
+                pass
+        elif key == 'action':
+            action = value
 
-    return HttpResponseRedirect('/')
+    if len(ebook_ids) == 0 or action == '':
+        return HttpResponseRedirect("/")
 
-"""
-def submit_new(request, type):
-   
-        Neue Daten hinzufügen
-   
-    if type == "ebook":
-        form=EbookForm(request.POST)
-        if form.is_valid():
-            f=form.cleaned_data["filename"]
-            n=form.cleaned_data["name"]
-            g=form.cleaned_data["group"]
-            s=form.cleaned_data["size"]
-
-            ebook = Ebook(filename=f, name=n, group=g, size=s)
-            ebook.save()
-            
-            return HttpResponseRedirect('/')
-        else:
-            return render_to_response('add_new.html',
-                { 'sitetitle': 'Fehler im Formular', 'form': form, 'type': type})
+    ###
+    # Action entsprechend auswerten
+    if action == 'info':
+        print "Info"
+    elif action == 'move':
+        forms = []
+        for i in ebook_ids:
+            try:
+                ebook = Ebook.objects.get(id=i)
+                form = EbookMovementForm(instance=ebook, prefix=i)
+                forms.append(form)
+            except Exception, e:
+                pass
         
-"""
+        return render_to_response('move_ebooks.html', {'forms': forms})        
+
+    elif action == 'delete':
+        print "Delete"
+    elif action == 'push2kindle':
+        print "Push2Kindle"
+
+    return HttpResponseRedirect("/")
+
+def submit_ebook_move(request):
+    """
+        Ebooks letztendlich verschieben
+    """
+    
+    # verwendete IDs extrahieren
+    ids = []
+    for (key,value) in request.POST.iteritems():
+        match = re.search('(\d+)-name$', key)
+        if match and (match.group(1) not in ids ):
+            ids.append(match.group(1))
+
+    ###
+    # Alle Forms aus POST extrahieren
+    for i in ids:
+        form = EbookMovementForm(data=request.POST, prefix=i)
+        if form.is_valid():
+            try:
+                ebook = Ebook.objects.get(id=i)
+                currentGroup = ebook.group
+                newGroup = form.cleaned_data['group']
+
+                if currentGroup != newGroup:
+                    ###
+                    # Dateien verschieben und Model anpassen
+                    currPath = newPath = ""
+                    currPath = os.path.join(MEDIA_ROOT, ebook.get_relative_path())
+                    ebook.group = newGroup
+                    newPath = os.path.join(MEDIA_ROOT, ebook.get_relative_path())
+                    
+                    shutil.move(currPath, newPath)
+                    if os.path.exists(newPath): 
+                        ebook.save()
+            except Exception, e:
+                print e
+
+    return HttpResponseRedirect("/")

@@ -1,4 +1,5 @@
 from django.db import models
+import os
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
@@ -31,6 +32,11 @@ class Ebook(models.Model):
 
     def __unicode__(self):
         return self.name
+    
+    def get_relative_path(self):
+        return os.path.join(self.group.category.dirname, 
+                            self.group.dirname,
+                            self.filename) 
 
 """
     Utility-Klassen
@@ -50,10 +56,5 @@ class EbookInformation(object):
         self.form = form
 
     def __generate_path(self, ebook):
-        try:
-            group = Group.objects.get(id=ebook.group.id)
-            category = Category.objects.get(id=group.category.id)
-            return ("%s/%s/%s" %
-                (category.dirname, group.dirname, ebook.filename))
-        except Exception, e:
-            return ""
+        return ebook.get_relative_path()
+
