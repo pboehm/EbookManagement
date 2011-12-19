@@ -3,6 +3,7 @@
 import os.path
 
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
+TEMP_DIR = '/tmp'
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -136,3 +137,28 @@ LOGGING = {
         },
     }
 }
+
+#
+# django-inotifier settings
+def generate_watch_paths():
+    """
+    A simple function to generate an iterable of 3-tuples as the
+    configuration to inotifier. The setting INOTIFIER_WATCH_PATHS is used by
+    the management command 'inotifier_start'.
+
+    This also keeps pyinotify from being imported directly into the settings
+    namespace.
+    """
+    import pyinotify
+    return (
+       (
+            EBOOK_PATH,
+            pyinotify.IN_CREATE|pyinotify.IN_DELETE,
+            'EbookManagement.ebooks.event_processors.EbookChangeProcessor',
+       ),
+    )
+INOTIFIER_WATCH_PATHS = generate_watch_paths()
+
+INOTIFIER_DAEMON_STDOUT = os.path.join(TEMP_DIR, 'inotifier_stdout.txt')
+INOTIFIER_DAEMON_STDERR = os.path.join(TEMP_DIR, 'inotifier_stderr.txt')
+
