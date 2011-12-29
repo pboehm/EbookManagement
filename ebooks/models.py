@@ -4,62 +4,72 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 import os
 
-class Category(models.Model):
+class Directory(models.Model):
     name = models.CharField(max_length=100)
     dirname = models.CharField(max_length=100)
+    parent = models.ForeignKey('Directory', null=True)
     description = models.CharField(max_length=100, blank=True)
     serial = models.IntegerField()
 
     def __unicode__(self):
         return self.name
 
-class Group(models.Model):
-    name = models.CharField(max_length=40)
-    dirname = models.CharField(max_length=100)
-    description = models.CharField(max_length=100, blank=True)
-    category = models.ForeignKey('Category')
-    serial = models.IntegerField()
+    def get_relative_path(self):
+        d = self
+        path = ""
+        while d is not None:
+            path = os.path.join(d.dirname, path)
+            d = d.parent
+        return path
 
-    def __unicode__(self):
-        return self.name
+    def has_ebooks(self):
+        try:
+            Ebook.objects.get(directory=self)
+        except Exception, e:
+            return False
+        return True
+
+    def get_ebooks(self):
+        ebooks = []
+        try:
+            for ebook in Ebook.objects.filter(directory=self):
+                ebooks.append(ebook)
+        except Exception, e:
+            pass
+        return ebooks
 
 class Ebook(models.Model):
     name = models.CharField(max_length=100)
     size = models.IntegerField()
     filename = models.CharField(max_length=100)
     icon = models.CharField(max_length=10)
-    group = models.ForeignKey('Group')
+    directory = models.ForeignKey('Directory')
     hashvalue = models.CharField(max_length=100)
     hasThumbnail = models.BooleanField()
     serial = models.IntegerField()
 
     def __unicode__(self):
         return self.name
-    
-    def get_relative_path(self):
-        return os.path.join(self.group.category.dirname, 
-                            self.group.dirname,
-                            self.filename) 
 
-"""
-Model, welches zusätzliche Informationen über einen 
-Nutzer speichert
-"""
+    def get_relative_path(self):
+        return os.path.join(self.directory.get_relative_path(),
+                            self.filename)
+
 class UserProfile(models.Model):
+    """
+        Model, welches zusätzliche Informationen über einen
+        Nutzer speichert
+    """
     user = models.OneToOneField(User)
     hasKindle = models.BooleanField()
     KindleAddress = models.EmailField()
-    
+
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
         UserProfile.objects.create(user=instance)
 
 post_save.connect(create_user_profile, sender=User)
 
-
-"""
-    Utility-Klassen
-"""
 class CategoryWithGroups(object):
     def __init__(self, category):
         self.category = category
@@ -71,7 +81,7 @@ class CategoryWithGroups(object):
 class EbookInformation(object):
     def __init__(self, ebook, form):
         self.ebook = ebook
-        self.filepath = self.__generate_path(ebook);
+        self.filepath = self.__generate_path(ebook)
         self.form = form
 
     def __generate_path(self, ebook):
