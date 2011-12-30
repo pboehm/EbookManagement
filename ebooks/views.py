@@ -16,44 +16,55 @@ def overview(request):
     """
         Gibt einen Überblick über vorhandene Kategorien und Gruppen
     """
-    categories = []
-    for cat in Category.objects.order_by("name").all():
-        categorywithgroups = CategoryWithGroups(cat)
-    
-        for group in Group.objects.order_by("name").filter(category=cat.id):
-            categorywithgroups.addGroup(group)
+    toplevel_dirs = []
+    for directory in Directory.objects.order_by("name").filter(parent=None):
+        toplevel_dirs.append(directory)
 
-        categories.append(categorywithgroups)
-    
-    return render_to_response('overview.html', 
-                            { 'categories': categories},
-                            context_instance=RequestContext(request))
+    return render_to_response(
+                'item_list.html',
+                {
+                    'directories': toplevel_dirs,
+                    'dir_count': len(toplevel_dirs),
+                    'sitetitle': "Verzeichnisuebersicht",
+                },
+                context_instance=RequestContext(request)
+            )
 
 @login_required
 def show_data(request, type, dataid):
     """
-        Listet verschiedene Daten auf
+        Listet Ebooks und Verzeichnisse auf
     """
-    if type == "group":
+    if type == "directory":
         try:
-            group = Group.objects.get(id=dataid)
+            directory = Directory.objects.get(id=dataid)
+
+            subdirs = directory.get_directories()
+
             ebooks = []
-            for ebook in Ebook.objects.order_by("name").filter(group=group.id):
+            for ebook in directory.get_ebooks():
                 form = EbookManagementForm(prefix=str(ebook.id))
                 info = EbookInformation(ebook, form)
                 ebooks.append(info)
-            
             action_form = EbookActionSelectForm()
 
-            return render_to_response('list_ebooks.html',
-                    {'group': group.name, 'ebooks': ebooks, 'action': action_form},
-                    context_instance=RequestContext(request))
+            return render_to_response(
+                        'item_list.html',
+                        {
+                            'sitetitle': 'Inhalt von "%s"' % directory.name,
+                            'directories': subdirs,
+                            'dir_count': len(subdirs),
+                            'ebooks': ebooks,
+                            'ebook_count': len(ebooks),
+                            'action': action_form
+                        },
+                        context_instance=RequestContext(request))
         except Exception, e:
             return HttpResponseNotFound
-        
+
     elif type == "ebook":
         pass
-        
+
     else:
         return HttpResponseNotFound
 
@@ -70,7 +81,7 @@ def manage_ebooks(request):
     ebook_ids = []
     action=""
     for (key, value) in request.POST.iteritems():
-        if (len(value) != 0) and key.endswith('selected'): 
+        if (len(value) != 0) and key.endswith('selected'):
             try:
                 e_id = key.split('-')[0]
                 Ebook.objects.get(id=e_id)
@@ -96,9 +107,9 @@ def manage_ebooks(request):
                 forms.append(form)
             except Exception, e:
                 pass
-        
+
         return render_to_response('move_ebooks.html', {'forms': forms},
-                context_instance=RequestContext(request))        
+                context_instance=RequestContext(request))
 
     elif action == 'delete':
         print "Delete"
@@ -112,10 +123,10 @@ def submit_ebook_move(request):
     """
         Ebooks letztendlich verschieben
     """
-    
+
     # verwendete IDs extrahieren
     ids = []
-    for (key,value) in request.POST.iteritems():
+    for (key, value) in request.POST.iteritems():
         match = re.search('(\d+)-name$', key)
         if match and (match.group(1) not in ids ):
             ids.append(match.group(1))
@@ -137,9 +148,9 @@ def submit_ebook_move(request):
                     currPath = os.path.join(MEDIA_ROOT, ebook.get_relative_path())
                     ebook.group = newGroup
                     newPath = os.path.join(MEDIA_ROOT, ebook.get_relative_path())
-                    
+
                     shutil.move(currPath, newPath)
-                    if os.path.exists(newPath): 
+                    if os.path.exists(newPath):
                         ebook.save()
             except Exception, e:
                 print e

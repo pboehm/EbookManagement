@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% block title %}{{ sitetitle }}{% endblock %}
+
+{% block meta %}
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/item_list.css" />
+<script src="{{ STATIC_URL }}js/jquery-1.7.1.min.js"></script>
+{% endblock %}
+    
+{% block content %}
+
+{% if dir_count > 0 %}
+<div id="directory_overview">
+    <strong>Verzeichnisse</strong>
+
+    <table class="list">
+        {% for dir in directories %}
+        <tr {% cycle 'class="highlighted"' '' %}>
+            <td class="foldericon">
+                <img src="{{ STATIC_URL }}fileicons/folder.png"/>
+            </td>
+
+            <td>
+                <a class="directory" href="/show/directory/{{ dir.id }}">{{dir.name}}</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+</div>
+{% endif %}
+
+
+{% if ebook_count > 0 %}
+<div id="ebook_overview">
+    <strong>Ebooks</strong>
+    <form method="post" action="/manage/ebooks/">
+    <table class="list">
+        {% for eb in ebooks %}
+            <tr {% cycle 'class="highlighted"' '' %}>
+                <td class="fileicon">
+                    <a{% if eb.ebook.hasThumbnail %}
+                        class="thumbnail" href="{{ MEDIA_URL }}.thumbnails/{{ eb.ebook.hashvalue }}.png"
+                        {% endif %} title="{{ eb.ebook.filename }}">
+                        <img src="{{ STATIC_URL }}fileicons/{{ eb.ebook.icon }}.png"/>
+                    </a>    
+                </td>
+                <td class="filename">
+                    <a href="{{ MEDIA_URL }}{{ eb.filepath|urlencode }}">{{eb.ebook.filename}}</a>
+                </td>
+                <td class="filesize">
+                    <span>{{ eb.ebook.size|filesizeformat}}</span>
+                </td>
+                <td class="fileselected">
+                    {{ eb.form.selected }}
+                </td>
+            </tr>
+        {% endfor %}
+        <tr class="lastrow">
+            <td colspan="4">
+                {{ action.action }}
+                <input id="submit_action" type="submit" value="Aktionen durchführen"/>
+            </td>
+        </tr>
+    </table>
+    </form>
+</div>
+{% endif %}
+
+<script>
+this.imagePreview = function(){	
+	/* CONFIG */
+		
+		xOffset = 70;
+		yOffset = 20;
+		
+		// these 2 variable determine popup's distance from the cursor
+		// you might want to adjust to get the right result
+		
+	/* END CONFIG */
+	$("a.thumbnail").hover(function(e){
+		this.t = this.title;
+		$("#container").append("<p id='preview'><img src='"+ this.href +"' alt='Image preview' /></p>");								 
+		$("#preview")
+			.css("top",(e.pageY - xOffset) + "px")
+			.css("left",(e.pageX + yOffset) + "px")
+			.fadeIn("fast");						
+    },
+	function(){
+		this.title = this.t;	
+		$("#preview").remove();
+    });	
+	$("a.thumbnail").mousemove(function(e){
+		$("#preview")
+			.css("top",(e.pageY - xOffset) + "px")
+			.css("left",(e.pageX + yOffset) + "px");
+	});			
+};
+
+
+// starting the script on page load
+$(document).ready(function(){
+	imagePreview();
+});
+
+//
+// Submit Button entfernen, wenn Javascript aktiv ist
+//
+$(document).ready(function(){
+    $('#submit_action').css("display", "none");
+    $('#id_action').change(function() {
+        $(this).closest("form").submit();
+    });
+});
+
+</script>
+
+{% endblock %}

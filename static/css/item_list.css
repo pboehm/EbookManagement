@@ -1,13 +1,19 @@
-#ebooks {
+
+body {
+	overflow-y: scroll;
+}
+
+.list {
     width: 100%;
 }
 
-#ebooks a,a:active {
+.list a,a:active {
     color: #2d2d2d;
     text-decoration: none;
+    font-weight: normal;
 }
 
-#ebooks a:hover {
+.list a:hover {
     text-decoration: underline;
 }
 
@@ -50,6 +56,6 @@
 	color:#fff;
 }
 
-body {
-	overflow-y: scroll;
+.foldericon {
+    width: 10px;
 }

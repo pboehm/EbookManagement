@@ -5,6 +5,7 @@ from EbookManagement.settings import *
 import os
 import time
 import re
+import sys
 import subprocess
 
 class Command(BaseCommand):
@@ -92,9 +93,10 @@ class Command(BaseCommand):
 
                 # Dateiendung extrahieren
                 entry_file_ending = ""
-                matched_ending = re.match('\.(\w+)$', entry)
+                matched_ending = re.match(".*\.(.*)$", entry)
+
                 if matched_ending:
-                    entry_file_ending = matched_ending.groups(0)
+                    entry_file_ending = matched_ending.groups(0)[0]
 
                 try:
                     ebook = Ebook.objects.get(
@@ -141,7 +143,7 @@ class Command(BaseCommand):
                     ret = subprocess.call(cmd, shell=True)
 
                     if ret == 0 and os.path.exists(entry_thumbnail):
-                        existing_ebook.hasThumbnail = True
+                        ebook.hasThumbnail = True
 
                 ebook.serial = serial
                 ebook.save()

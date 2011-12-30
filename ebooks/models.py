@@ -32,11 +32,20 @@ class Directory(models.Model):
     def get_ebooks(self):
         ebooks = []
         try:
-            for ebook in Ebook.objects.filter(directory=self):
+            for ebook in Ebook.objects.order_by('name').filter(directory=self):
                 ebooks.append(ebook)
         except Exception, e:
             pass
         return ebooks
+
+    def get_directories(self):
+        dirs = []
+        try:
+            for d in Directory.objects.order_by('name').filter(parent=self):
+                dirs.append(d)
+        except Exception, e:
+            pass
+        return dirs
 
 class Ebook(models.Model):
     name = models.CharField(max_length=100)
@@ -69,14 +78,6 @@ def create_user_profile(sender, instance, created, **kwargs):
         UserProfile.objects.create(user=instance)
 
 post_save.connect(create_user_profile, sender=User)
-
-class CategoryWithGroups(object):
-    def __init__(self, category):
-        self.category = category
-        self.groups = []
-
-    def addGroup(self, group):
-        self.groups.append(group)
 
 class EbookInformation(object):
     def __init__(self, ebook, form):

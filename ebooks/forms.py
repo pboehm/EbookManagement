@@ -4,13 +4,9 @@ from models import *
 from django import forms
 from EbookManagement.settings import *
 
-class CategoryForm(ModelForm):
+class DirectoryForm(ModelForm):
     class Meta:
-        model = Category
-
-class GroupForm(ModelForm):
-    class Meta:
-        model = Group
+        model = Directory
 
 class EbookForm(ModelForm):
     class Meta:
@@ -25,4 +21,4 @@ class EbookActionSelectForm(Form):
 class EbookMovementForm(ModelForm):
     class Meta:
         model = Ebook
-        fields = ('name', 'group')
+        fields = ('name', 'directory')
