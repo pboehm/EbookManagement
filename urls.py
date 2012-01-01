@@ -13,9 +13,11 @@ urlpatterns = patterns('',
     url(r'manage/ebooks/$', views.manage_ebooks ),
     url(r'manage/ebooks/move/$', views.submit_ebook_move ),
 
+    url(r'search/$', views.search_items),
+
     url(r'login/$', 'django.contrib.auth.views.login', {'template_name': 'login.html'} ),
     url(r'logout/$', 'django.contrib.auth.views.logout_then_login' ),
-    
+
     # admin
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),

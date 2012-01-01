@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Übersicht der Kategorien{% endblock %}
+
+{% block content %}
+<h3>Verzeichnisinhalt von "{{ current_directory.name }}"</h3>
+
+{% include "shared/directories.html" %}
+{% include "shared/ebooks.html" %}
+{% endblock %}

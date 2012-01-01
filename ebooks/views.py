@@ -21,11 +21,9 @@ def overview(request):
         toplevel_dirs.append(directory)
 
     return render_to_response(
-                'item_list.html',
+                'overview.html',
                 {
                     'directories': toplevel_dirs,
-                    'dir_count': len(toplevel_dirs),
-                    'sitetitle': "Verzeichnisuebersicht",
                 },
                 context_instance=RequestContext(request)
             )
@@ -49,13 +47,11 @@ def show_data(request, type, dataid):
             action_form = EbookActionSelectForm()
 
             return render_to_response(
-                        'item_list.html',
+                        'directory_listing.html',
                         {
-                            'sitetitle': 'Inhalt von "%s"' % directory.name,
+                            'current_directory': directory,
                             'directories': subdirs,
-                            'dir_count': len(subdirs),
                             'ebooks': ebooks,
-                            'ebook_count': len(ebooks),
                             'action': action_form
                         },
                         context_instance=RequestContext(request))
@@ -157,3 +153,29 @@ def submit_ebook_move(request):
 
     return HttpResponseRedirect("/")
 
+@login_required
+def search_items(request):
+    """Suche nach bestimmten Ebooks"""
+
+    if 'query' in request.GET:
+        query = request.GET['query']
+
+        ebooks = []
+        for ebook in Ebook.objects.order_by("name").filter(filename__icontains=query):
+            form = EbookManagementForm(prefix=str(ebook.id))
+            info = EbookInformation(ebook, form)
+            ebooks.append(info)
+        action_form = EbookActionSelectForm()
+
+
+        return render_to_response(
+                'search_results.html',
+                {
+                    'search_query': query,
+                    'ebooks': ebooks,
+                    'action': action_form
+                },
+                context_instance=RequestContext(request)
+            )
+
+    return HttpResponseRedirect("/")

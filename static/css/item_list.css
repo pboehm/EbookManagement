@@ -57,5 +57,9 @@ body {
 }
 
 .foldericon {
-    width: 10px;
+    padding-right: 5px;
+}
+
+.foldername {
+    width: 100%;
 }

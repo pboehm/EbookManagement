@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block title %}Übersicht der Kategorien{% endblock %}
+
+{% block content %}
+<h3>Suchergebnisse für "{{ search_query }}"</h3>
+
+{% include "shared/ebooks.html" %}
+{% endblock %}
