@@ -15,17 +15,23 @@ class Directory(models.Model):
         return self.name
 
     def get_relative_path(self):
-        d = self
         path = ""
-        while d is not None:
-            path = os.path.join(d.dirname, path)
-            d = d.parent
+        for d in self.get_relative_path_components():
+            path = os.path.join(path, d.dirname)
         return path
+
+    def get_relative_path_components(self):
+        components = []
+        c = self
+        while c is not None:
+            components.insert(0, c)
+            c = c.parent
+        return components
 
     def has_ebooks(self):
         try:
             Ebook.objects.get(directory=self)
-        except Exception, e:
+        except Exception:
             return False
         return True
 
@@ -34,7 +40,7 @@ class Directory(models.Model):
         try:
             for ebook in Ebook.objects.order_by('name').filter(directory=self):
                 ebooks.append(ebook)
-        except Exception, e:
+        except Exception:
             pass
         return ebooks
 
@@ -43,7 +49,7 @@ class Directory(models.Model):
         try:
             for d in Directory.objects.order_by('name').filter(parent=self):
                 dirs.append(d)
-        except Exception, e:
+        except Exception:
             pass
         return dirs
 

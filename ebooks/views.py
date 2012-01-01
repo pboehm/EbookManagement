@@ -8,7 +8,6 @@ from EbookManagement.settings import *
 from EbookManagement.ebooks.forms import *
 import os
 import re
-import pprint
 import shutil
 
 @login_required
@@ -36,7 +35,7 @@ def show_data(request, type, dataid):
     if type == "directory":
         try:
             directory = Directory.objects.get(id=dataid)
-
+            print directory.get_relative_path_components()
             subdirs = directory.get_directories()
 
             ebooks = []
@@ -55,7 +54,7 @@ def show_data(request, type, dataid):
                             'action': action_form
                         },
                         context_instance=RequestContext(request))
-        except Exception, e:
+        except Exception:
             return HttpResponseNotFound
 
     elif type == "ebook":
@@ -82,7 +81,7 @@ def manage_ebooks(request):
                 e_id = key.split('-')[0]
                 Ebook.objects.get(id=e_id)
                 ebook_ids.append(e_id)
-            except Exception, e:
+            except Exception:
                 pass
         elif key == 'action':
             action = value
@@ -101,7 +100,7 @@ def manage_ebooks(request):
                 ebook = Ebook.objects.get(id=i)
                 form = EbookMovementForm(instance=ebook, prefix=i)
                 forms.append(form)
-            except Exception, e:
+            except Exception:
                 pass
 
         return render_to_response('move_ebooks.html', {'forms': forms},
@@ -167,7 +166,6 @@ def search_items(request):
             ebooks.append(info)
         action_form = EbookActionSelectForm()
 
-
         return render_to_response(
                 'search_results.html',
                 {
@@ -177,5 +175,4 @@ def search_items(request):
                 },
                 context_instance=RequestContext(request)
             )
-
     return HttpResponseRedirect("/")
