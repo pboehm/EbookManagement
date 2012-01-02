@@ -1,23 +1,23 @@
 # -*- coding: utf-8 -*-
-# Django settings for EbookManagement project.
 import os.path
+import socket
 
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 TEMP_DIR = '/tmp'
 
 DEBUG = True
+if socket.gethostname() == 'vserver1.i77i.de':
+    DEBUG = False
+
 TEMPLATE_DEBUG = DEBUG
 
-ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
-)
-
+ADMINS = ()
 MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(PROJECT_ROOT, 'ebooks.db'), 
+        'NAME': os.path.join(PROJECT_ROOT, 'ebooks.db'),
         'USER': '',
         'PASSWORD': '',
         'HOST': '',
@@ -64,7 +64,7 @@ for icon in os.listdir(os.path.join(PROJECT_ROOT, 'static', 'fileicons')):
 MEDIA_ROOT = EBOOK_PATH
 MEDIA_URL = '/media/'
 
-STATIC_ROOT = '' 
+STATIC_ROOT = ''
 STATIC_URL = '/static/'
 
 ADMIN_MEDIA_PREFIX = '/static/admin/'
@@ -83,7 +83,6 @@ SECRET_KEY = '*j$7$y5h)1di3s#l*+wj6+ji1gtms%$2g2lh=)pc&o%+w2$lql'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
