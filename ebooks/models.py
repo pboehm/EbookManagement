@@ -62,6 +62,7 @@ class Ebook(models.Model):
     hashvalue = models.CharField(max_length=100)
     hasThumbnail = models.BooleanField()
     serial = models.IntegerField()
+    indexed = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
         return self.name
