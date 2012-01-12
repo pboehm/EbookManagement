@@ -2,21 +2,34 @@
 from django.core.management.base import BaseCommand
 from EbookManagement.ebooks.models import Directory, Ebook
 from EbookManagement.settings import *
+from optparse import make_option
 import os
 import time
 import re
 import sys
 import subprocess
 
+
 class Command(BaseCommand):
     """
         Management-Command welches den Index der Ebooks aktualisiert
     """
     help = 'Updates the Index of Ebooks'
+    option_list = BaseCommand.option_list + (
+        make_option('--quiet',
+            action='store_true',
+            dest='quiet',
+            default=False,
+            help='Keine Ausgaben'),
+        )
 
     def handle(self, *args, **options):
+        self.quiet = options.get("quiet")
         serial_nr = int(time.time())
         os.chdir(EBOOK_PATH)
+
+        if self.quiet:
+            print "Ausgaben werden unterdrueckt ..."
 
         ###
         # Alle Top-Level Directories indexieren
@@ -35,13 +48,16 @@ class Command(BaseCommand):
             directory.serial = serial_nr
             directory.save()
 
-            print "== %s" % directory
+            if not self.quiet:
+                print "== %s" % directory
 
             self.update_directory(directory, serial_nr)
 
         ####
         # Nicht existierende Verzeichnisse Ebooks werden entfernt
-        print "Suche nach Ebooks die nicht mehr existieren"
+        if not self.quiet:
+            print "Suche nach Ebooks die nicht mehr existieren"
+
         ser = serial_nr
         for ebook in Ebook.objects.exclude(serial=ser):
             if ebook.hasThumbnail:
@@ -50,11 +66,13 @@ class Command(BaseCommand):
                                 ebook.hashvalue + '.png'
                             )
                 os.unlink(thumbnail)
-            print ebook.filename
+            if not self.quiet:
+                print ebook.filename
             ebook.delete()
 
         for directory in Directory.objects.exclude(serial=ser):
-            print directory.dirname
+            if not self.quiet:
+                print directory.dirname
             directory.delete()
 
 
@@ -81,14 +99,16 @@ class Command(BaseCommand):
                 subdirectory.serial = serial
                 subdirectory.save()
 
-                print ">> %s" % subdirectory
+                if not self.quiet:
+                    print ">> %s" % subdirectory
 
                 self.update_directory(subdirectory, serial)
 
             else:
                 ###
                 # Es ist ein potentielles Ebook
-                print "---> %s" % entry_path
+                if not self.quiet:
+                    print "---> %s" % entry_path
                 current_directory = directory
 
                 # Dateiendung extrahieren
