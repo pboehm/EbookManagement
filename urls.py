@@ -12,12 +12,15 @@ urlpatterns = patterns('',
     url(r'show/(?P<type>\w+)/(?P<dataid>\d+)/', views.show_data ),
     url(r'manage/ebooks/$', views.manage_ebooks ),
     url(r'manage/ebooks/move/$', views.submit_ebook_move ),
+    url(r'manage/ebooks/add/$', views.add_ebook),
 
     url(r'search/$', views.search_items),
 
+    url(r'manage/user/profile/$', views.manage_user_profile),
     url(r'login/$', 'django.contrib.auth.views.login', {'template_name': 'login.html'} ),
     url(r'logout/$', 'django.contrib.auth.views.logout_then_login' ),
 
+    url(r'^favicon\.ico$', 'django.views.generic.simple.redirect_to', {'url': '/static/img/favicon.ico'}),
     # admin
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
