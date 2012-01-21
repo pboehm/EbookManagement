@@ -35,7 +35,6 @@ def show_data(request, type, dataid):
     if type == "directory":
         try:
             directory = Directory.objects.get(id=dataid)
-            print directory.get_relative_path_components()
             subdirs = directory.get_directories()
 
             ebooks = []
@@ -175,4 +174,27 @@ def search_items(request):
                 },
                 context_instance=RequestContext(request)
             )
+    return HttpResponseRedirect("/")
+
+@login_required
+def add_ebook(request):
+    if request.method == 'POST':
+        form = EbookUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            print request.FILES['file'].name
+            #handle_uploaded_file(request.FILES['file'])
+            return HttpResponseRedirect('/')
+    else:
+        form = EbookUploadForm()
+    return render_to_response(
+                'ebook_upload.html',
+                {
+                    'upload_form': form,
+                },
+                context_instance=RequestContext(request)
+            )
+
+@login_required
+def manage_user_profile(request):
+    """docstring for manage_user_profile"""
     return HttpResponseRedirect("/")

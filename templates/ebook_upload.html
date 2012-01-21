@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %} Ebooks hinzufügen {% endblock title %}
+
+{% block content %}
+
+<h3>Ebooks hinzufügen</h3>
+
+<form method="post" action="/manage/ebooks/add/" 
+    enctype="multipart/form-data">
+<table>
+    {{ upload_form.as_table }}
+</table>
+
+<input type="submit" value="Hinzufügen" />
+</form>
+
+{% endblock %}

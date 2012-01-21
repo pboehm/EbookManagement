@@ -28,12 +28,16 @@
     <div id="navigation">
         <ul>
             <li><a href="/">Startseite</a></li>
+            <li><a href="/manage/ebooks/add/">Ebooks hinzufügen</a></li>
+
             {% if user.is_authenticated %}
             <li id="userinfo">Hallo {{ user.first_name }} {{ user.last_name }}
             <form method="get" action="/logout/">
                 <input type="Submit" value="Logout"/>
             </form>
             </li>
+
+            <li><a href="/manage/user/profile/">Benutzereinstellungen</a></li>
             {% endif %}
         </ul>
     </div>

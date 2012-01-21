@@ -4,13 +4,12 @@ from models import *
 from django import forms
 from EbookManagement.settings import *
 
-class DirectoryForm(ModelForm):
-    class Meta:
-        model = Directory
-
 class EbookForm(ModelForm):
     class Meta:
         model = Ebook
+
+class EbookUploadForm(Form):
+    file = forms.FileField()
 
 class EbookManagementForm(Form):
     selected = forms.BooleanField()
