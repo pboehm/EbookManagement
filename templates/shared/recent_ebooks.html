@@ -1,0 +1,19 @@
+<div id="recent_ebooks">
+    <h3>Aktuellste Ebooks</h3>
+    <table class="list">
+        {% for eb in recent_ebooks %}
+            <tr {% cycle 'class="highlighted"' '' %}>
+                <td class="ebookname">
+                    <a href="{{ MEDIA_URL }}{{ eb.get_relative_path|urlencode }}">{{eb.filename}}</a>
+                </td>
+                <td class="indexdate">
+                    {{eb.indexed|date:"SHORT_DATETIME_FORMAT"}}
+                </td>
+                <td class="directory">
+                    <a href="/show/directory/{{ eb.directory.id }}/">{{ eb.directory.dirname}}</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+

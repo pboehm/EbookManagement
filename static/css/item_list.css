@@ -69,6 +69,22 @@ body {
     width: 100%;
 }
 
+.ebookname {
+    width: 50%;
+    overflow: hidden;
+}
+
+.indexdate {
+    width: 20%;
+    text-align: right;
+}
+
+.directory {
+    width: 30%;
+    overflow: hidden;
+    text-align: right;
+}
+
 /*
  * Breadcrumbs
  */
@@ -82,4 +98,16 @@ body {
 
 .breadcrumbs span {
     padding: 0px 2px;
+}
+
+/*
+ * recent ebooks
+ */
+#recent_ebooks {
+    margin-top: 50px;
+}
+
+#recent_ebooks h3 {
+    margin: 0px;
+    margin-bottom: 5px;
 }

@@ -19,10 +19,15 @@ def overview(request):
     for directory in Directory.objects.order_by("name").filter(parent=None):
         toplevel_dirs.append(directory)
 
+    recent_ebooks = []
+    for ebook in Ebook.objects.order_by("-indexed").all()[:5]:
+        recent_ebooks.append(ebook)
+
     return render_to_response(
                 'overview.html',
                 {
                     'directories': toplevel_dirs,
+                    'recent_ebooks': recent_ebooks,
                 },
                 context_instance=RequestContext(request)
             )
