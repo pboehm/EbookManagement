@@ -21,7 +21,7 @@ ENDING=$3
 
 if [[ $ENDING == "pdf" ]]
 then
-    convert -alpha off -thumbnail x400 "$SOURCEFILE[0]" $TARGETFILE
+    convert -alpha off -thumbnail x400 "$SOURCEFILE[0]" $TARGETFILE 2>&1 > /dev/null
     exit 0
 fi
 
