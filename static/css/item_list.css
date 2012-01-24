@@ -101,14 +101,16 @@ body {
 }
 
 #site_description {
+    margin: 0px;
     margin-top: 30px;
+    margin-bottom: 5px;
 }
 
 /*
  * recent ebooks
  */
 #recent_ebooks {
-    margin-top: 50px;
+    margin-top: 40px;
 }
 
 #recent_ebooks h3 {
