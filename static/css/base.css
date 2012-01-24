@@ -84,3 +84,13 @@ body {
     padding: 10px 0px 0px 15px;
 }
 
+#footer {
+    text-align: center;
+    padding-top: 25px;
+    font-size: 10pt;
+    color: #2d2d2d;
+}
+
+#footer a, a:active, a:hover {
+    color: #2d2d2d;
+}
