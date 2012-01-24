@@ -111,6 +111,11 @@ class Command(BaseCommand):
                     print "---> %s" % entry_path
                 current_directory = directory
 
+                # Index-Dateien ausschließen
+                isIndexfile = re.match("^\.fileinfo\..*$", entry)
+                if isIndexfile:
+                    continue
+
                 # Dateiendung extrahieren
                 entry_file_ending = ""
                 matched_ending = re.match(".*\.(.*)$", entry)
