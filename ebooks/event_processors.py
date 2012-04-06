@@ -2,7 +2,7 @@
 import pyinotify
 
 class EbookChangeProcessor(pyinotify.ProcessEvent):
-    
+
     def process_IN_CREATE(self, event):
         print "IN CREATE: %s" % event.pathname
 
