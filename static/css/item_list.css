@@ -1,119 +1,119 @@
-
-body {
-	overflow-y: scroll;
-}
-
-.list {
-    width: 100%;
-}
-
-.list ul {
-    padding: 0px;
-    margin: 0px;
-}
-
-.list a,a:active {
-    color: #2d2d2d;
-    text-decoration: none;
-    font-weight: normal;
-}
-
-.list a:hover {
-    text-decoration: underline;
-}
-
-.highlighted {
-    background-color: #f2f2f2;
-}
-
-.fileicon {
-    padding-right: 5px;
-}
-
-.filename {
-    width: 84%;
-}
-
-.filesize {
-    text-align: right;
-    width: 10%;
-}
-
-.fileselected {
-    text-align: center;
-    width: 6%;
-}
-
-.fileselected input {
-    width: 100%;
-}
-
-.lastrow {
-    text-align: right;
-}
-
-#preview{
-	position:absolute;
-	border:1px solid #ccc;
-	background:#333;
-	padding:5px;
-	display:none;
-	color:#fff;
-}
-
-.foldericon {
-    padding-right: 5px;
-}
-
-.foldername {
-    width: 100%;
-}
-
-.ebookname {
-    width: 50%;
-    overflow: hidden;
-}
-
-.indexdate {
-    width: 20%;
-    text-align: right;
-}
-
-.directory {
-    width: 30%;
-    overflow: hidden;
-    text-align: right;
-}
-
-/*
- * Breadcrumbs
- */
-.breadcrumbs {
-    width: 100%;
-} 
-
-.breadcrumbs a, a:hover, a:active {
-    text-decoration: underline;
-}
-
-.breadcrumbs span {
-    padding: 0px 2px;
-}
-
-#site_description {
-    margin: 0px;
-    margin-top: 30px;
-    margin-bottom: 5px;
-}
-
-/*
- * recent ebooks
- */
-#recent_ebooks {
-    margin-top: 40px;
-}
-
-#recent_ebooks h3 {
-    margin: 0px;
-    margin-bottom: 5px;
-}
+/*  */
+/* body { */
+/* 	overflow-y: scroll; */
+/* } */
+/*  */
+/* .list { */
+/*     width: 100%; */
+/* } */
+/*  */
+/* .list ul { */
+/*     padding: 0px; */
+/*     margin: 0px; */
+/* } */
+/*  */
+/* .list a,a:active { */
+/*     color: #2d2d2d; */
+/*     text-decoration: none; */
+/*     font-weight: normal; */
+/* } */
+/*  */
+/* .list a:hover { */
+/*     text-decoration: underline; */
+/* } */
+/*  */
+/* .highlighted { */
+/*     background-color: #f2f2f2; */
+/* } */
+/*  */
+/* .fileicon { */
+/*     padding-right: 5px; */
+/* } */
+/*  */
+/* .filename { */
+/*     width: 84%; */
+/* } */
+/*  */
+/* .filesize { */
+/*     text-align: right; */
+/*     width: 10%; */
+/* } */
+/*  */
+/* .fileselected { */
+/*     text-align: center; */
+/*     width: 6%; */
+/* } */
+/*  */
+/* .fileselected input { */
+/*     width: 100%; */
+/* } */
+/*  */
+/* .lastrow { */
+/*     text-align: right; */
+/* } */
+/*  */
+/* #preview{ */
+/* 	position:absolute; */
+/* 	border:1px solid #ccc; */
+/* 	background:#333; */
+/* 	padding:5px; */
+/* 	display:none; */
+/* 	color:#fff; */
+/* } */
+/*  */
+/* .foldericon { */
+/*     padding-right: 5px; */
+/* } */
+/*  */
+/* .foldername { */
+/*     width: 100%; */
+/* } */
+/*  */
+/* .ebookname { */
+/*     width: 50%; */
+/*     overflow: hidden; */
+/* } */
+/*  */
+/* .indexdate { */
+/*     width: 20%; */
+/*     text-align: right; */
+/* } */
+/*  */
+/* .directory { */
+/*     width: 30%; */
+/*     overflow: hidden; */
+/*     text-align: right; */
+/* } */
+/*  */
+/* /* */
+/*  * Breadcrumbs */
+/*  */ */
+/* .breadcrumbs { */
+/*     width: 100%; */
+/* }  */
+/*  */
+/* .breadcrumbs a, a:hover, a:active { */
+/*     text-decoration: underline; */
+/* } */
+/*  */
+/* .breadcrumbs span { */
+/*     padding: 0px 2px; */
+/* } */
+/*  */
+/* #site_description { */
+/*     margin: 0px; */
+/*     margin-top: 30px; */
+/*     margin-bottom: 5px; */
+/* } */
+/*  */
+/* /* */
+/*  * recent ebooks */
+/*  */ */
+/* #recent_ebooks { */
+/*     margin-top: 40px; */
+/* } */
+/*  */
+/* #recent_ebooks h3 { */
+/*     margin: 0px; */
+/*     margin-bottom: 5px; */
+/* } */

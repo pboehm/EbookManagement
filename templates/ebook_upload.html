@@ -4,15 +4,19 @@
 
 {% block content %}
 
-<h3>Ebooks hinzufügen</h3>
+<div class="page-header">
+  <h2>Ebooks hinzufügen</h2>
+</div>
 
-<form method="post" action="/manage/ebooks/add/" 
-    enctype="multipart/form-data">
-<table>
-    {{ upload_form.as_table }}
-</table>
+<div class="well">
+  <form method="post" action="/manage/ebooks/add/"
+      enctype="multipart/form-data">
+  <table>
+      {{ upload_form.as_table }}
+  </table>
 
-<input type="submit" value="Hinzufügen" />
-</form>
+  <input type="submit" class="btn btn-primary" value="Hinzufügen" />
+  </form>
+</div>
 
 {% endblock %}

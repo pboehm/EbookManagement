@@ -1,15 +1,16 @@
 <div id="ebook_overview">
     <form method="post" action="/manage/ebooks/">
-    <table class="list">
+
+    <table class="table table-striped">
         {% for eb in ebooks %}
             <tr {% cycle 'class="highlighted"' '' %}>
-                <td class="fileicon">
-                    <a{% if eb.ebook.hasThumbnail %}
-                        class="thumbnail" href="{{ MEDIA_URL }}.thumbnails/{{ eb.ebook.hashvalue }}.png"
-                        {% endif %} title="{{ eb.ebook.filename }}">
-                        <img src="{{ STATIC_URL }}fileicons/{{ eb.ebook.icon }}.png"/>
-                    </a>    
-                </td>
+                <!-- <td class="fileicon"> -->
+                <!--     <a{% if eb.ebook.hasThumbnail %} -->
+                <!--         class="thumbnail" href="{{ MEDIA_URL }}.thumbnails/{{ eb.ebook.hashvalue }}.png" -->
+                <!--         {% endif %} title="{{ eb.ebook.filename }}"> -->
+                <!--         <img src="{{ STATIC_URL }}fileicons/{{ eb.ebook.icon }}.png"/> -->
+                <!--     </a> -->
+                <!-- </td> -->
                 <td class="filename">
                     <a href="{{ MEDIA_URL }}{{ eb.filepath|urlencode }}">{{eb.ebook.filename}}</a>
                 </td>
@@ -32,29 +33,29 @@
 </div>
 
 <script>
-this.imagePreview = function(){	
-		
+this.imagePreview = function(){
+
     xOffset = 70;
     yOffset = 20;
 
 	$("a.thumbnail").hover(function(e){
 		this.t = this.title;
-		$("#container").append("<p id='preview'><img src='"+ this.href +"' alt='Image preview' /></p>");								 
+		$("#container").append("<p id='preview'><img src='"+ this.href +"' alt='Image preview' /></p>");
 		$("#preview")
 			.css("top",(e.pageY - xOffset) + "px")
 			.css("left",(e.pageX + yOffset) + "px")
-			.fadeIn("fast");						
+			.fadeIn("fast");
     },
 	function(){
-		this.title = this.t;	
+		this.title = this.t;
 		$("#preview").remove();
-    });	
-    
+    });
+
     $("a.thumbnail").mousemove(function(e){
 		$("#preview")
 			.css("top",(e.pageY - xOffset) + "px")
 			.css("left",(e.pageX + yOffset) + "px");
-	});			
+	});
 };
 
 $(document).ready(function(){

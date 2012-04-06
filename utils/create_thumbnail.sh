@@ -1,11 +1,11 @@
 ####
-# Script, welches ein Thumbnail von der übergebenen 
-# Datei erstellt. 
+# Script, welches ein Thumbnail von der übergebenen
+# Datei erstellt.
 # Autor: Philipp Böhm
 #
-# Parameter: 
-# 1.) [Pfad zur Quelldatei] 
-# 2.) [Pfad zur zu erstellenden Thumbnail-Datei] 
+# Parameter:
+# 1.) [Pfad zur Quelldatei]
+# 2.) [Pfad zur zu erstellenden Thumbnail-Datei]
 # 3.) [Endung]
 #
 
@@ -25,10 +25,10 @@ then
     exit $?
 fi
 
-if [[ ! -n `echo $ENDING | grep "tar.gz$"` ]]
-then
-    tar tzf "$SOURCEFILE" | convert text:- -trim +repage -border 3 $TARGETFILE
-    exit $?
-fi
+# if [[ ! -n `echo $ENDING | grep "tar.gz$"` ]]
+# then
+#     tar tzf "$SOURCEFILE" | convert text:- -trim +repage -border 3 $TARGETFILE
+#     exit $?
+# fi
 
 exit 1

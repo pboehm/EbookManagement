@@ -1,15 +1,16 @@
-<table class="list highlighted">
-    <tr>
-        <td class="foldericon">
-            <img src="{{ STATIC_URL }}fileicons/folder.png"/>
-        </td>
-        <td class="breadcrumbs">
-            <a href="/">Startseite</a></li>
-            {% for c in current_directory.get_relative_path_components %}
-                <span>/</span>
-                <a href="/show/directory/{{ c.id }}">{{ c.name }}</a>
-            {% endfor %}
-        </td>
-    </tr>
-</table>
-<p></p>
+<ul class="breadcrumb">
+
+  <li>
+    <a href="/">Startseite</a>
+    <span class="divider">/</span>
+  </li>
+
+  {% for c in current_directory.get_relative_path_components %}
+    <li>
+      <a href="/show/directory/{{ c.id }}">{{ c.name }}</a>
+      <span class="divider">/</span>
+    </li>
+  {% endfor %}
+
+</ul>
+

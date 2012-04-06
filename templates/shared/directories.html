@@ -1,10 +1,10 @@
 <div id="directory_overview">
-    <table class="list">
+    <table class="table table-striped ">
         {% for dir in directories %}
-            <tr {% cycle 'class="highlighted"' '' %}>
-                <td class="foldericon">
-                    <img src="{{ STATIC_URL }}fileicons/folder.png"/>
-                </td>
+            <tr>
+                <!-- <td class="foldericon"> -->
+                <!--     <img src="{{ STATIC_URL }}fileicons/folder.png"/> -->
+                <!-- </td> -->
                 <td class="foldername">
                     <a class="directory" href="/show/directory/{{ dir.id }}">{{dir.name}}</a>
                 </td>
