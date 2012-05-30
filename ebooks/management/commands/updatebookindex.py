@@ -28,9 +28,6 @@ class Command(BaseCommand):
         serial_nr = int(time.time())
         os.chdir(EBOOK_PATH)
 
-        if self.quiet:
-            print "Ausgaben werden unterdrueckt ..."
-
         ###
         # Alle Top-Level Directories indexieren
         for d in os.listdir(u"."):
@@ -135,7 +132,7 @@ class Command(BaseCommand):
                                 ["md5sum", entry_path],
                                 stdout=subprocess.PIPE).communicate()[0].split(' ')[0].strip()
 
-                    print md5hash
+                    #print md5hash
                     fileicon = 'file'
 
                     if entry_file_ending in EXISTING_FILE_ICONS:

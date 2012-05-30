@@ -19,11 +19,11 @@ SOURCEFILE=$1
 TARGETFILE=$2
 ENDING=$3
 
-if [[ $ENDING == "pdf" ]]
-then
-    convert -alpha off -thumbnail x400 "$SOURCEFILE[0]" $TARGETFILE 2>&1 > /dev/null
-    exit $?
-fi
+# if [[ $ENDING == "pdf" ]]
+# then
+#    convert -alpha off -thumbnail x400 "$SOURCEFILE[0]" $TARGETFILE 2>&1 > /dev/null
+#    exit $?
+#fi
 
 # if [[ ! -n `echo $ENDING | grep "tar.gz$"` ]]
 # then
