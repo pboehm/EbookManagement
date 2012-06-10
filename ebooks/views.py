@@ -69,6 +69,7 @@ def show_data(request, type, dataid):
     else:
         return HttpResponseNotFound
 
+
 def studip_json_data(request):
     """
         Die Inhalte eines StudIP Verzeichnis als JSON zurückgeben,
@@ -86,7 +87,7 @@ def studip_json_data(request):
             ebook_info = {
                 'name': ebook.name,
                 'size': ebook.size,
-                'url': request.get_host() +
+                'url': "http://" + request.get_host() +
                     urlencode(MEDIA_URL + ebook.get_relative_path()),
             }
             ebooks.append(ebook_info)
@@ -95,8 +96,11 @@ def studip_json_data(request):
 
     json_serialized = json.dumps(data_for_json, ensure_ascii=False)
 
-    return HttpResponse(json_serialized, mimetype="application/json")
+    # use JSONP if the parameter callback is supplied
+    if request.GET.has_key('callback'):
+        json_serialized = "%s(%s)" % (request.GET['callback'], json_serialized)
 
+    return HttpResponse(json_serialized, mimetype='application/json')
 
 
 @login_required
