@@ -1,14 +1,16 @@
 # -*- coding: utf-8 -*-
-from django.shortcuts import render_to_response
+from django.shortcuts import *
 from django.http import HttpResponseNotFound, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.template import RequestContext
+from django.template.defaultfilters import urlencode
 from models import *
 from EbookManagement.settings import *
 from EbookManagement.ebooks.forms import *
 import os
 import re
 import shutil
+import json
 
 @login_required
 def overview(request):
@@ -66,6 +68,36 @@ def show_data(request, type, dataid):
 
     else:
         return HttpResponseNotFound
+
+def studip_json_data(request):
+    """
+        Die Inhalte eines StudIP Verzeichnis als JSON zurückgeben,
+        um es in Auditorium einbauen zu können.
+
+        Hier absichtlich ohne Authentifizierungszwang
+    """
+    studip = get_object_or_404(Directory, dirname="StudIP")
+
+    data_for_json = dict()
+    for subdir in studip.get_directories():
+        ebooks = []
+
+        for ebook in subdir.get_ebooks():
+            ebook_info = {
+                'name': ebook.name,
+                'size': ebook.size,
+                'url': request.get_host() +
+                    urlencode(MEDIA_URL + ebook.get_relative_path()),
+            }
+            ebooks.append(ebook_info)
+
+        data_for_json[subdir.dirname] = ebooks
+
+    json_serialized = json.dumps(data_for_json, ensure_ascii=False)
+
+    return HttpResponse(json_serialized, mimetype="application/json")
+
+
 
 @login_required
 def manage_ebooks(request):
