@@ -22,7 +22,7 @@ def overview(request):
         toplevel_dirs.append(directory)
 
     recent_ebooks = []
-    for ebook in Ebook.objects.order_by("-indexed").all()[:5]:
+    for ebook in Ebook.objects.order_by("-indexed").all()[:11]:
         recent_ebooks.append(ebook)
 
     return render_to_response(
