@@ -57,12 +57,6 @@ class Command(BaseCommand):
 
         ser = serial_nr
         for ebook in Ebook.objects.exclude(serial=ser):
-            if ebook.hasThumbnail:
-                thumbnail = os.path.join(
-                                EBOOK_THUMBNAIL_PATH,
-                                ebook.hashvalue + '.png'
-                            )
-                os.unlink(thumbnail)
             if not self.quiet:
                 print ebook.filename
             ebook.delete()
@@ -147,25 +141,6 @@ class Command(BaseCommand):
                                 hasThumbnail=False,
                                 hashvalue=md5hash,
                             )
-
-                ###
-                # Thumbnail erstellen
-                if not ebook.hasThumbnail:
-                    entry_thumbnail = os.path.join(
-                                        EBOOK_THUMBNAIL_PATH,
-                                        ebook.hashvalue + '.png'
-                                      )
-
-                    cmd = u'%s "%s" "%s" "%s"' % (
-                            os.path.join(PROJECT_ROOT, 'utils', 'create_thumbnail.sh'),
-                            os.path.join(EBOOK_PATH, ebook.get_relative_path()),
-                            entry_thumbnail,
-                            entry_file_ending,
-                        )
-                    ret = subprocess.call(cmd, shell=True)
-
-                    if ret == 0 and os.path.exists(entry_thumbnail):
-                        ebook.hasThumbnail = True
 
                 ebook.serial = serial
                 ebook.save()
