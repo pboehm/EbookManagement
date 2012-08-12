@@ -34,24 +34,18 @@ USE_L10N = True
 ####
 # Pfad zu den Ebooks
 EBOOK_PATH = '/var/ebooks/'
-if DEBUG == True:
+if DEBUG:
     EBOOK_PATH = '/home/philipp/Desktop/Ebooks'
-
-####
-# Pfad zu Thumbnails
-EBOOK_THUMBNAIL_PATH = os.path.join(EBOOK_PATH, '.thumbnails')
-if not os.path.isdir(EBOOK_THUMBNAIL_PATH):
-    os.mkdir(EBOOK_THUMBNAIL_PATH)
 
 ####
 # Moeglichkeiten fuer Ebooks
 CHOICES_FOR_EBOOKS = [
-        ('', '-------------'),
-        ('info', 'Informationen anzeigen'),
-        ('move', 'Verschieben'),
-        ('delete', 'Löschen'),
-        ('push2kindle', 'An Kindle versenden'),
-    ]
+    ('', '-------------'),
+    ('info', 'Informationen anzeigen'),
+    ('move', 'Verschieben'),
+    ('delete', 'Löschen'),
+    ('push2kindle', 'An Kindle versenden'),
+]
 
 ####
 # Existierende Icons laden
@@ -96,7 +90,7 @@ ROOT_URLCONF = 'EbookManagement.urls'
 
 AUTH_PROFILE_MODULE = 'ebooks.UserProfile'
 LOGIN_REDIRECT_URL = '/'
-LOGIN_URL= '/login/'
+LOGIN_URL = '/login/'
 
 TEMPLATE_DIRS = (
     os.path.join(PROJECT_ROOT, 'templates'),
@@ -136,28 +130,3 @@ LOGGING = {
         },
     }
 }
-
-#
-# django-inotifier settings
-def generate_watch_paths():
-    """
-    A simple function to generate an iterable of 3-tuples as the
-    configuration to inotifier. The setting INOTIFIER_WATCH_PATHS is used by
-    the management command 'inotifier_start'.
-
-    This also keeps pyinotify from being imported directly into the settings
-    namespace.
-    """
-    import pyinotify
-    return (
-       (
-            EBOOK_PATH,
-            pyinotify.IN_CREATE|pyinotify.IN_DELETE,
-            'EbookManagement.ebooks.event_processors.EbookChangeProcessor',
-       ),
-    )
-INOTIFIER_WATCH_PATHS = generate_watch_paths()
-
-INOTIFIER_DAEMON_STDOUT = os.path.join(TEMP_DIR, 'inotifier_stdout.txt')
-INOTIFIER_DAEMON_STDERR = os.path.join(TEMP_DIR, 'inotifier_stderr.txt')
-
