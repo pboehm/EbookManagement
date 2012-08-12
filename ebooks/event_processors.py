@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import pyinotify
 
+
 class EbookChangeProcessor(pyinotify.ProcessEvent):
 
     def process_IN_CREATE(self, event):
